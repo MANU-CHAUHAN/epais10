@@ -10,7 +10,7 @@ from collections import defaultdict
 from dateutil.relativedelta import relativedelta
 
 faker = Faker()
-user_count = 1000
+user_count = 10_000
 
 Profile = namedtuple("Profile", faker.profile().keys())
 Profile.__doc__ = "`named tuple` for fake profile containing various fields providing information about each user's basic details"

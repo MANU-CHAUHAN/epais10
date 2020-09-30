@@ -78,9 +78,9 @@ def test_function_doc_string():
 
 def test_gen_profiles_tuples():
     profiles = get_profiles_namedtuples()
-    assert len(profiles) == 1000, "Something is wrong with the  get_profiles_namedtuples()"
+    assert len(profiles) == 10_000, "Something is wrong with the  get_profiles_namedtuples()"
 
 
 def test_gen_profiles_dict():
     profiles = get_profiles_dictionary()
-    assert len(profiles) == 1000, "Something is wrong with the get_profiles_dictionary())"
+    assert len(profiles) == 10_000, "Something is wrong with the get_profiles_dictionary())"
