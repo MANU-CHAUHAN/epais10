@@ -9,7 +9,15 @@ import time
 from functools import wraps
 
 faker = Faker()
-user_count = 10
+user_count = 10_000
+
+Profile = namedtuple("Profile", faker.profile().keys())
+Profile.__doc__ = "`named tuple` for fake profile containing various fields providing information about each user's basic details"
+
+for field_ in Profile._fields:
+    getattr(Profile,
+            field_).__doc__ = f"field `{field_}` containing information for a particular user's {field_} details"
+print(help(Profile))
 
 
 def timer(num):
@@ -38,9 +46,9 @@ def timer(num):
     return dec
 
 
-def task1(to_print=False):
+def calculate_metrics_namedtuples(to_print=False, *, fake_profiles: list) -> tuple:
     """
-    To use namedtuples and Faker library to generate 10000 random user profiles and do the following:
+    To use all fake profiles passed by user and do the following:
     1) calculate the highest occurring blood type
     2) mean location
     3) oldest person's age
@@ -48,36 +56,26 @@ def task1(to_print=False):
 
     :return: Tuple for the tasks' results in same order as above
     """
-    fake = faker.profile()
-    record_dict = defaultdict(list)
-
-    Profile = namedtuple("Profile", fake.keys())
-    Profile.__doc__ = "`named tuple` for fake profile containing various fields providing information about each user's basic details"
-
-    for field_ in Profile._fields:
-        getattr(Profile,
-                field_).__doc__ = f"field `{field_}` containing information for a particular user's {field_} details"
-
-    for _ in range(user_count):
-        fake_profile = Profile(**faker.profile())
-
-        record_dict['blood_group'].append(fake_profile.blood_group)
-        record_dict['current_location'].append(fake_profile.current_location)
-        record_dict['dob'].append(fake_profile.birthdate)
+    blood_groups = []
+    current_locations = []
+    dobs = []
+    for profile in fake_profiles:
+        blood_groups.append(profile.blood_group)
+        current_locations.append(profile.current_location)
+        dobs.append(profile.birthdate)
 
     today = date.today()
 
-    most_common_blood_group = Counter(record_dict['blood_group']).most_common(1)[0][0]
+    most_common_blood_group = Counter(blood_groups).most_common(1)[0][0]
 
-    mean_location = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2), record_dict['current_location'])
+    mean_location = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2), current_locations)
 
-    max_age = relativedelta(today, min(record_dict['dob']))
+    max_age = relativedelta(today, min(dobs))
 
     avg_age = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2, (x[2] + y[2]) / 2),
                      [(relativedelta(today, x).years, relativedelta(today, x).months, relativedelta(today, x).days) for
-                      x in record_dict['dob']])
+                      x in dobs])
     if to_print:
-        print(help(Profile))
         print(f"Highest occurring blood group= {most_common_blood_group}")
         print(f"Mean location= {mean_location}")
         print(f"Maximum age= {max_age.years}years {max_age.months}months {max_age.days}days")
@@ -86,9 +84,8 @@ def task1(to_print=False):
     return most_common_blood_group, mean_location, max_age, avg_age
 
 
-def task2(to_print=False):
+def calculate_metrics_dictionary(to_print=False, *, fake_profiles: list) -> tuple:
     """
-    To use dictionary and Faker library to generate 10000 random user profiles and do the following:
     1) calculate the highest occurring blood type
     2) mean location
     3) oldest person's age
@@ -97,9 +94,8 @@ def task2(to_print=False):
     :return: Tuple for the tasks' results in same order as above
     """
     record_dict = defaultdict(dict)
-    for _ in range(user_count):
-        fake_profile = faker.profile()
-        record_dict[fake_profile['ssn']] = fake_profile
+    for profile in fake_profiles:
+        record_dict[profile['ssn']] = profile
 
     most_common_blood_group = Counter([b['blood_group'] for a, b in record_dict.items()]).most_common(1)[0][0]
 
@@ -122,17 +118,39 @@ def task2(to_print=False):
     return most_common_blood_group, mean_location, max_age, avg_age
 
 
-@timer(num=100)
-def run_task_1():
-    """Calls task1() using the decorator `timer` """
-    task1()
+def get_profiles_namedtuples():
+    """
+    To use namedtuples and Faker library to generate 10000 random user profiles
+    """
+    all_profiles = []
+    for _ in range(user_count):
+        all_profiles.append(Profile(**faker.profile()))
+
+    return all_profiles
+
+
+def get_profiles_dictionary():
+    """
+    To use dictionary and Faker library to generate 10000 random user profiles
+    """
+    all_profiles = []
+    for _ in range(user_count):
+        fake = faker.profile()
+        all_profiles.append(fake)
+    return all_profiles
 
 
 @timer(num=100)
-def run_task_2():
-    """Calls task2() using the decorator `timer` """
-    task2()
+def run_task_namedtuple_metrics():
+    """Calls calculate_metrics_namedtuples() feeding profiles from get_profiles_namedtuples() using the decorator `timer` """
+    calculate_metrics_namedtuples(fake_profiles=get_profiles_namedtuples())
 
 
-print(run_task_1())
-print(run_task_2())
+@timer(num=100)
+def run_task_dictionary_metrics():
+    """Calls calculate_metrics_dictionary() feeding profiles from get_profiles_dictionary() which returns a dictionary of profiles the decorator `timer` """
+    calculate_metrics_dictionary(fake_profiles=get_profiles_dictionary())
+
+
+print(run_task_namedtuple_metrics())
+print(run_task_dictionary_metrics())

@@ -1,22 +1,53 @@
-# epais10
+# **Session 10 - Tuples and Named Tuples**
 
-#### Topics:
->Tuples as a Data Structure
+## **Assignment**
+1. Use Faker library to get 10000 random profiles. Using namedtuple, calculate the largest blood type, mean-current_location, oldest_person_age and average age (add proper doc-strings)
+2. Do the same thing above using a dictionary. Prove that namedtuple is faster.
+3. Create a fake data (you can use Faker for company names) for imaginary stock exchange for top 100 companies (name, symbol, open, high, close). Assign a random weight to all the companies. Calculate and show what value stock market started at, what was the highest value during the day and where did it end. Make sure your open, high, close are not totally random. You can only use namedtuple. 
 
->Named Tuple
+## **Functions**
 
->Named Tuple - Modifying & Extending
+### 1. timer(num):
+    """
+    Timer decorator that takes a paramter `num` the number of time to run the decorated function and calculate the average
+    :param num: int signifying the number of time to run the function
+    :return: the decorator for timing `fn` `num` times' average
+    """
 
->Named Tuple - DocString & Default Values
 
-Tuples are immutable data structures which come handy when the data is not required to be modified. Examples include fetching data from database, the records will have same column names as the DB's schema. 
+### 2. calculate_metrics_namedtuples(to_print=False, *, fake_profiles: list) -> tuple:
+    """
+    To use all fake profiles passed by user and do the following:
+    1) calculate the highest occurring blood type
+    2) mean location
+    3) oldest person's age
+    4) average age
 
-Named tuples provide user with the flexibility and ease of use in case there are many fields to keep track of in a tuple or record and referencing with position or associating meaning with individual position is not the Pythonic way and often leads to errors in code. Named tuples also give the feature of storing, modifying and having default values for fields.
+    :return: Tuple for the tasks' results in same order as above
+    """
+### 3. calculate_metrics_dictionary(to_print=False, *, fake_profiles: list) -> tuple:
+    """
+    1) calculate the highest occurring blood type
+    2) mean location
+    3) oldest person's age
+    4) average age
 
-Although Classes could be used to overcome the default tuple behaviour and adding flexibility, however, classes come with lot of overhead.
+    :return: Tuple for the tasks' results in same order as above
+    """
+    
+### 4. get_profiles_namedtuples():
+    """
+    To use namedtuples and Faker library to generate 10000 random user profiles
+    """
+### 5. get_profiles_dictionary():
+    """
+    To use dictionary and Faker library to generate 10000 random user profiles
+    """
 
-Named tuples provide a way of overcoming the broken use-case scenarios in case of unpacking as well. They `subclass` `tuple` and have added feature of having property names to positional elements. Named tuple's data can be accessed by *1)Index 2)slice 3)itearting
+### 6. @timer(num=100)
+    def run_task_namedtuple_metrics():
+        """Calls calculate_metrics_namedtuples() feeding profiles from get_profiles_namedtuples() using the decorator `timer` """
 
->The `rename` argument helps to rectify any naming errors for named tuples and converts to `_position` where position starts from 0.
-
-> The `_fileds` attribute helps to retrieve all fields from a named tuple.
+### 7. @timer(num=100)
+    def run_task_dictionary_metrics():
+        """Calls calculate_metrics_dictionary() feeding profiles from get_profiles_dictionary() which returns a dictionary of profiles the decorator `timer` """
