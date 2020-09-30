@@ -6,7 +6,7 @@
 3. Create a fake data (you can use Faker for company names) for imaginary stock exchange for top 100 companies (name, symbol, open, high, close). Assign a random weight to all the companies. Calculate and show what value stock market started at, what was the highest value during the day and where did it end. Make sure your open, high, close are not totally random. You can only use namedtuple. 
 
 
-## The Jupyter Notebook has results for 10K profiles as well Stock Exchange details
+## The Jupyter Notebook has results for 10K profiles as well Stock Exchange details (Top 100 companies stock details, Stock Index, High for the day, low close for the day)
 
 > Tuples as a Data Structure
 
