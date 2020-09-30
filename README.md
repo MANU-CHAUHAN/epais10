@@ -5,6 +5,33 @@
 2. Do the same thing above using a dictionary. Prove that namedtuple is faster.
 3. Create a fake data (you can use Faker for company names) for imaginary stock exchange for top 100 companies (name, symbol, open, high, close). Assign a random weight to all the companies. Calculate and show what value stock market started at, what was the highest value during the day and where did it end. Make sure your open, high, close are not totally random. You can only use namedtuple. 
 
+> Tuples as a Data Structure
+
+> Named Tuple
+
+> Named Tuple - Modifying & Extending
+
+> Named Tuple - DocString & Default Values
+
+The primary reason for using namedtuples is to provide programmer with the flexibility of having named references for immutable data structure which is subclass of `tuple` and avoid errors during writing a program with non-pythonic way by using position idices to refer elements of a tuple.
+
+Although `class` could be used in place of tuples to add more functionality, classed have additional over head.
+
+Named Tuples come handy while accessing attributes like classes and unlike normal tuples.
+
+`namedtuple` is a class factory.
+
+Named tuples can be accessed by: 1) index 2) slice 3) iterate
+
+Mutation of namedtuple throws error as underlying data structure is still a tuple which happens to be immutable.
+
+The `rename` argument helps to initialize a namedtuple class without illegal identifier as attribute and replaces it with the positional int value prefixed by underscore.
+
+`_fields` helps to get a tuple of all the attributes of a namedtuple instance.
+
+`_asdict` helps to get an OrderedDict having key value pairs for all attributes and the corresponding values for a namedtuple instance.
+
+  
 ## **Functions**
 
 ### 1. timer(num):
