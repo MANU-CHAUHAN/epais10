@@ -1,13 +1,13 @@
-from collections import namedtuple
-from faker import Faker
-from collections import defaultdict
-from collections import Counter
-from functools import reduce
-from dateutil.relativedelta import relativedelta
-from datetime import date
 import time
-from functools import wraps
 import random
+from faker import Faker
+from datetime import date
+from functools import wraps
+from functools import reduce
+from collections import Counter
+from collections import namedtuple
+from collections import defaultdict
+from dateutil.relativedelta import relativedelta
 
 faker = Faker()
 user_count = 1000
@@ -75,9 +75,7 @@ def calculate_metrics_namedtuples(to_print=False, *, fake_profiles: list) -> tup
 
     max_age = relativedelta(today, min(dobs))
 
-    avg_age = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2, (x[2] + y[2]) / 2),
-                     [(relativedelta(today, x).years, relativedelta(today, x).months, relativedelta(today, x).days) for
-                      x in dobs])
+    avg_age = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2, (x[2] + y[2]) / 2), [(relativedelta(today, x).years, relativedelta(today, x).months, relativedelta(today, x).days) for x in dobs])
     if to_print:
         print(f"Highest occurring blood group= {most_common_blood_group}")
         print(f"Mean location= {mean_location}")
@@ -102,16 +100,12 @@ def calculate_metrics_dictionary(to_print=False, *, fake_profiles: list) -> tupl
 
     most_common_blood_group = Counter([b['blood_group'] for a, b in record_dict.items()]).most_common(1)[0][0]
 
-    mean_location = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2),
-                           [b['current_location'] for a, b in record_dict.items()])
+    mean_location = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2), [b['current_location'] for a, b in record_dict.items()])
 
     today = date.today()
     max_age = relativedelta(today, min([b['birthdate'] for a, b in record_dict.items()]))
 
-    avg_age = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2, (x[2] + y[2]) / 2), [(relativedelta(today, b[
-        'birthdate']).years, relativedelta(today, b['birthdate']).months, relativedelta(today, b['birthdate']).days) for
-                                                                                              a, b in
-                                                                                              record_dict.items()])
+    avg_age = reduce(lambda x, y: ((x[0] + y[0]) / 2, (x[1] + y[1]) / 2, (x[2] + y[2]) / 2), [(relativedelta(today, b['birthdate']).years, relativedelta(today, b['birthdate']).months, relativedelta(today, b['birthdate']).days) for a, b in record_dict.items()])
     if to_print:
         print(f"Highest occurring blood group= {most_common_blood_group}")
         print(f"Mean location= {mean_location}")
@@ -180,9 +174,7 @@ def stock_market():
             high = close
 
         all_companies.append(
-            Stocks(name=name, symbol=get_capitalized_letters(name), open=open_, high=round(high, 2),
-                   close=round(close, 2),
-                   company_weight=round(random.uniform(15, 80), 3)))
+            Stocks(name=name, symbol=get_capitalized_letters(name), open=open_, high=round(high, 2), close=round(close, 2), company_weight=round(random.uniform(15, 80), 3)))
 
     stock_index = round(sum(x.open * x.company_weight for x in all_companies), 4)
     highest_for_day = round(max(x.high * x.company_weight for x in all_companies), 2)
